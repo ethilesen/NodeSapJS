@@ -1,0 +1,10 @@
+applications:
+- services:
+  - Cloud Integration-mv
+  disk_quota: 1024M
+  host: statoiltest
+  name: statoiltest
+  path: .
+  domain: mybluemix.net
+  instances: 1
+  memory: 256M
