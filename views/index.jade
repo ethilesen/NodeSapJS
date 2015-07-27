@@ -12,9 +12,9 @@ block row-content
        fieldset(data-role='controlgroup')
        label(for='fdate') From Date 
        input(id='fdate',type='text',value='',placeholder='YYYYMMDD',name='fdate')
-       div(data-role='fieldcontain')
        label(for='tdate') To Date
-       input(id='tdate',type='text',value='',placeholder='YYYYMMDD',name='tdate')   
+       input(id='tdate',type='text',value='',placeholder='YYYYMMDD',name='tdate')
+       div(data-role='fieldcontain')
        label(for='empnrf') From Employe Number
        input(id='empnrf',type='text',value='00001809',placeholder='00000000',name='empnrf')
        label(for='empnrt') To Employe Number
@@ -45,7 +45,7 @@ block row-content
        input(id='etime',type='text',value='16:00:00',placeholder='',name='etime')
        div(data-role='fieldcontain')   
        button(type='submit',value='Send timesheet') Send TimeSheet
-  div.row        
+  div.row()        
       h2 Output
       div(id='messages')
    div.row 
@@ -63,6 +63,5 @@ block row-content
               table.data
           div.well.row.status.text-center(style='display:none;')
           
-          script(type='text/javascript', src='/js/demo.js')
           
           

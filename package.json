@@ -1,7 +1,7 @@
 {
-  "name": "VisualRecognitionNodejsStarterApp",
+  "name": "SAPTimeSheet",
   "version": "0.1.2",
-  "description": "A sample nodejs app for Bluemix that use the Visual Recognition service",
+  "description": "A sample nodejs app for Bluemix that use the Cloud Integration service",
   "dependencies": {
     "body-parser": "~1.10.0",
     "errorhandler": "~1.3.2",
