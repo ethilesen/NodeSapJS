@@ -1,0 +1,68 @@
+//- index.jade
+extends ./layout.jade
+block row-content
+  div.row.image-options
+    div.col-lg-12
+      h2 TimeSheet
+      //button(type="submit", onClick="test('Dette tar tid å finne ut av !!')") SendM
+      //button(type="submit", onClick="send(title)") GetTime
+    div(style="border:1px dashed black", class='form-group')
+     form(id='gtlist' metod='post' action='/getTimeSheet')
+      div(data-role='fieldcontain')
+       fieldset(data-role='controlgroup')
+       label(for='fdate') From Date 
+       input(id='fdate',type='text',value='',placeholder='YYYYMMDD',name='fdate')
+       div(data-role='fieldcontain')
+       label(for='tdate') To Date
+       input(id='tdate',type='text',value='',placeholder='YYYYMMDD',name='tdate')   
+       label(for='empnrf') From Employe Number
+       input(id='empnrf',type='text',value='00001809',placeholder='00000000',name='empnrf')
+       label(for='empnrt') To Employe Number
+       input(id='empnrt',type='text',value='00001809',placeholder='00000000',name='empnrt')
+       div(data-role='fieldcontain')   
+        button(type='submit',value='Get timesheet') Get
+     
+     div(style='border:1px dashed black')
+     h2 TimeSheet
+     form(id='slist',action='#',method='post')
+      div(data-role='fieldcontain')
+       fieldset(data-role='controlgroup')
+       label(for='profile') Profile
+       select(id='profile')
+               option 20150610
+       //input(id='profile',type='text',value='20150610',placeholder='',name='profile')
+       label(for='wdate') WorkDate
+       input(id='wdate',type='text',value='',placeholder='YYYMMDD',name='wdate')
+       label(for='empnr') Employee Nr
+       input(id='empnr',type='text',value='00001809',placeholder='',name='empnr')
+       label(for='scctr') Send CCTR
+       input(id='scctr',type='text',value='0000004300',placeholder='',name='scctr')
+       //label(for='shorttext') Short Text
+       input(id='stext',type='text',value='',placeholder='Short text',name='stext',class="form-control")
+       label(for='stime') Start Time
+       input(id='stime',type='text',value='08:00:00',placeholder='',name='stime')
+       label(for='etime') End Time
+       input(id='etime',type='text',value='16:00:00',placeholder='',name='etime')
+       div(data-role='fieldcontain')   
+       button(type='submit',value='Send timesheet') Send
+  div.row        
+      h2 Output
+      div(id='messages')
+   div.row 
+     table(id='tabell',style= 'border-collapse: collapse; border: 1px solid black;',border='1')
+       div.row
+        div.col-lg-12.col-xs-12
+          div.well.row.result
+            div.col-lg-12.col-xs-12.loading
+              img(src='images/watson.gif')
+            div.col-lg-12.col-xs-12.error.message
+              h4 Error processing the request.  Please try again.
+            div.col-lg-12.col-xs-12.empty-results.message
+              h4.empty-text
+            div.col-lg-12.col-xs-12
+              table.data
+          div.well.row.status.text-center(style='display:none;')
+          
+          script(type='text/javascript', src='/js/demo.js')
+          
+          

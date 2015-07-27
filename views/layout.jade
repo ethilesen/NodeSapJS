@@ -1,0 +1,44 @@
+//- layout.jade
+doctype html
+html(lang='en')
+  head
+    block title
+      title SAP timesheet manager
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='shortcut icon', href='/images/favicon.ico', type='image/x-icon')
+    link(rel='icon', href='/images/favicon.ico', type='image/x-icon')
+    link(rel='stylesheet', href='/css/watson-bootstrap-dark.css')
+    link(rel='stylesheet', href='/css/banner.css')
+    link(rel='stylesheet', href='/css/style.css')
+    link(rel='stylesheet', href='/css/datepicker.css')
+    link(rel='stylesheet', href='/css/jquery.timepicker.css')
+
+  body
+    div.container
+      div.row
+        div.col-lg-12
+          div.row.top-nav
+            div.col-lg-12
+              h3.heading.left IBM 
+                span Statoil Bluemix Demo  
+          div.row.header(style='padding-bottom:0px;')
+            div.avatar.img-container.col-lg-1.col-xs-1
+              img(src='/images/app.png')
+            div.col-lg-6.col-xs-6
+              h2 Bluemix Cloud Integration
+              p Time Management SAP - Powerd by Bluemix
+            div.col-lg-4.col-xs-4.build-your-own
+              h3 Work With SAP TimeSheet
+         //     button(onclick='showResult()') Click
+      block row-content
+
+    script(type='text/javascript', src='//code.jquery.com/jquery-1.8.3.min.js')
+    script(type='text/javascript', src='/js/jquery.ui.widget.js')
+    script(type='text/javascript', src='/js/jquery.fileupload.js')
+    script(type='text/javascript', src='/js/jquery.iframe-transport.js')
+    script(type='text/javascript', src='/js/demo.js')
+    script(type='text/javascript', src='/js/ReconnectingWebSocket.js')
+    script(type='text/javascript' src='/js/jquery-ui.js') 
+    script(type='text/javascript' src='/js/jquery.timepicker.min.js')   
