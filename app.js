@@ -22,7 +22,7 @@ var express = require('express'),
   path = require('path'),
   bluemix = require('./config/bluemix'),
   validator = require('validator'),
-  watson = require('watson-developer-cloud'),
+  //watson = require('watson-developer-cloud'),
   extend = require('util')._extend,
   fs = require('fs');
 
@@ -39,7 +39,7 @@ var credentials = extend({
 }, bluemix.getServiceCreds('visual_recognition')); // VCAP_SERVICES
 
 // Create the service wrapper
-var visualRecognition = watson.visual_recognition(credentials);
+//var visualRecognition = watson.visual_recognition(credentials);
 
 // render index page
 app.get('/', function(req, res) {

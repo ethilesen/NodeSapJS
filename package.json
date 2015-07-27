@@ -9,26 +9,10 @@
     "jade": "~1.9.1",
     "multer": "^0.1.7",
     "request": "~2.51.0",
-    "validator": "^3.28.0",
-    "watson-developer-cloud": "~0.9.6"
+    "validator": "^3.28.0"
   },
   "engines": {
     "node": ">=0.10"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/watson-developer-cloud/visual-recognition-nodejs.git"
-  },
-  "author": "IBM Corp.",
-  "contributors": [
-    {
-      "name": "German Attanasio Ruiz",
-      "email": "germanatt@us.ibm.com"
-    }
-  ],
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/watson-developer-cloud/visual-recognition-nodejs/issues"
   },
   "scripts": {
     "start": "node app.js"
