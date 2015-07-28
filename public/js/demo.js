@@ -25,7 +25,9 @@
 
 form.onsubmit = function(e) {
 	e.preventDefault();
-
+  $('html, body').animate({
+		        scrollTop: $("#messages").offset().top
+		    }, 2000);
 // Retrieve the message from the textarea.
 	 var message = {"qtype":"glist","fdate":fdate.value,"tdate":tdate.value,"empnrf":empnrf.value,"empnrt":empnrt.value};
 	 var url = '/GetTimeSheet';
@@ -80,6 +82,9 @@ form.onsubmit = function(e) {
 };
 form2.onsubmit = function(e) {
 	   	e.preventDefault();
+       $('html, body').animate({
+		        scrollTop: $("#messages").offset().top
+		    }, 2000);
 		console.log("Form2 submitt!");
    	 var message = {"profile":profile.value,"wdate":wdate.value,"empnr":empnr.value,"scctr":scctr.value, "stext":stext.value, "stime":stime.value, "etime":etime.value};
 	 var url = '/sendTimeSheet';

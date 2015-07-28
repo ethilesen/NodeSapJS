@@ -2,28 +2,26 @@
 extends ./layout.jade
 block row-content
   div.row.image-options
-    div.col-lg-12
-      h2 TimeSheet
-      //button(type="submit", onClick="test('Dette tar tid å finne ut av !!')") SendM
-      //button(type="submit", onClick="send(title)") GetTime
-    div(style="border:1px dashed black", class='form-group')
+    div.col-xs-12
+      h3 TimeSheet
+    div.col-xs-12(class='form-group')
      form(id='gtlist' metod='post' action='/getTimeSheet')
-      div(data-role='fieldcontain')
+      div.col-xs-12(data-role='fieldcontain')
        fieldset(data-role='controlgroup')
        label(for='fdate') From Date
        input(id='fdate',type='text',value='',placeholder='YYYYMMDD',name='fdate')
        label(for='tdate') To Date
        input(id='tdate',type='text',value='',placeholder='YYYYMMDD',name='tdate')
-       div(data-role='fieldcontain')
        label(for='empnrf') From Employe Number
        input(id='empnrf',type='text',value='00001809',placeholder='00000000',name='empnrf')
+       div(data-role='fieldcontain')
        label(for='empnrt') To Employe Number
        input(id='empnrt',type='text',value='00001809',placeholder='00000000',name='empnrt')
-       div(data-role='fieldcontain')
-        button(type='submit',value='Get timesheet') Get TimeSheet
+       div.col-xs-12(data-role='fieldcontain')
+      button(type='submit',value='Get timesheet') Get TimeSheet
 
-     div(style='border:1px dashed black')
-     h2 TimeSheet
+     div.col-xs-12(style='border:1px dashed black')
+     h3 TimeSheet
      form(id='slist',action='#',method='post')
       div(data-role='fieldcontain')
        fieldset(data-role='controlgroup')
@@ -45,12 +43,11 @@ block row-content
        input(id='etime',type='text',value='16:00:00',placeholder='',name='etime')
        div(data-role='fieldcontain')
        button(type='submit',value='Send timesheet') Send TimeSheet
-  div.row()
-      h2 Output
-      div(id='messages')
-   div.row
+  div.col-lg-12()
+      h3 Output
+      div.col-lg-12(id='messages')
+   div.col-lg-14
      table(id='tabell',style= 'border-collapse: collapse; border: 1px solid black;',border='1')
-       div.row
         div.col-lg-12.col-xs-12
           div.well.row.result
             div.col-lg-12.col-xs-12.loading
