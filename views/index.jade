@@ -1,4 +1,4 @@
-//- index.jade
+//- index.jade This are a simple form app
 extends ./layout.jade
 block row-content
   div.row.image-options
@@ -10,7 +10,7 @@ block row-content
      form(id='gtlist' metod='post' action='/getTimeSheet')
       div(data-role='fieldcontain')
        fieldset(data-role='controlgroup')
-       label(for='fdate') From Date 
+       label(for='fdate') From Date
        input(id='fdate',type='text',value='',placeholder='YYYYMMDD',name='fdate')
        label(for='tdate') To Date
        input(id='tdate',type='text',value='',placeholder='YYYYMMDD',name='tdate')
@@ -19,9 +19,9 @@ block row-content
        input(id='empnrf',type='text',value='00001809',placeholder='00000000',name='empnrf')
        label(for='empnrt') To Employe Number
        input(id='empnrt',type='text',value='00001809',placeholder='00000000',name='empnrt')
-       div(data-role='fieldcontain')   
+       div(data-role='fieldcontain')
         button(type='submit',value='Get timesheet') Get TimeSheet
-     
+
      div(style='border:1px dashed black')
      h2 TimeSheet
      form(id='slist',action='#',method='post')
@@ -43,12 +43,12 @@ block row-content
        input(id='stime',type='text',value='08:00:00',placeholder='',name='stime')
        label(for='etime') End Time
        input(id='etime',type='text',value='16:00:00',placeholder='',name='etime')
-       div(data-role='fieldcontain')   
+       div(data-role='fieldcontain')
        button(type='submit',value='Send timesheet') Send TimeSheet
-  div.row()        
+  div.row()
       h2 Output
       div(id='messages')
-   div.row 
+   div.row
      table(id='tabell',style= 'border-collapse: collapse; border: 1px solid black;',border='1')
        div.row
         div.col-lg-12.col-xs-12
@@ -62,6 +62,3 @@ block row-content
             div.col-lg-12.col-xs-12
               table.data
           div.well.row.status.text-center(style='display:none;')
-          
-          
-          
