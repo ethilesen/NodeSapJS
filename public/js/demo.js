@@ -39,10 +39,13 @@ form.onsubmit = function(e) {
 		 console.log("got: "+ data);
 
  		if (data.lastIndexOf('{"CATimeSheetRecord.GetList.Response"', 0) === 0){
-
+    try{
  		var data = JSON.parse(data)['CATimeSheetRecord.GetList.Response']['CatsrecordsOut']['item'];
  		//$('#messages').html(JSON.stringify(data));
+   }
+   catch(err){
 		console.log(JSON.stringify(data));
+  }
  		var tr;
 		if (!data[0]){
 	 		tr = $('<tr/>');
@@ -93,17 +96,23 @@ form2.onsubmit = function(e) {
    	 $('.loading').show();
 	 var posting = $.post( url, { s: message } );
 	 posting.done(function( data ) {
+     var ndata;
+     try{
+		 ndata = JSON.parse(data)['CATimeSheetManager.Insert.Response']['Return']['item'];
+   }
+   catch(err) {
+    console.log("got: "+ JSON.stringify(data));
+    $('#tabell').html("Obs.... something went wrong" + JSON.stringify(data) );
+}
 
-		 var data = JSON.parse(data)['CATimeSheetManager.Insert.Response']['Return']['item'];
-		  console.log("got: "+ JSON.stringify(data));
-   	 //ws.send(JSON.stringify(message));
+
 
    	 $('.result').hide();
    	 $('.loading').hide();
-	 if(data[0]){
-		 $('#tabell').html("did it insert ?: "+data[0].MESSAGE);
+	 if(ndata[0]){
+		 $('#tabell').html("Return Message: "+ndata[0].MESSAGE);
  		}else{
- 			$('#tabell').html("did it insert ?: "+data[0].MESSAGE);
+ 			$('#tabell').html("Obs.. something went wrong" + data.MESSAGE );
  		};
 
  	});
