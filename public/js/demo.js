@@ -28,10 +28,10 @@ form.onsubmit = function(e) {
   $('html, body').animate({
 		        scrollTop: $("#messages").offset().top
 		    }, 2000);
-// Retrieve the message from the textarea.
+// Retrieve the message from form submitt.
 	 var message = {"qtype":"glist","fdate":fdate.value,"tdate":tdate.value,"empnrf":empnrf.value,"empnrt":empnrt.value};
 	 var url = '/GetTimeSheet';
-	 $('#tabell').html('');
+	  $('#tabell').html('');
    	 $('.result').show();
    	 $('.loading').show();
 	 var posting = $.post( url, { s: message } );
@@ -80,9 +80,18 @@ form.onsubmit = function(e) {
 	};
 
 	 //return false;
-	   };
-   });
-};
+ } // if data lastIndexOf
+ else {
+
+    $('.result').hide();
+    $('.loading').hide();
+    $('#tabell').html("Obs.... something went wrong" + JSON.stringify(data) );
+ }
+     // response does not contanin any array...
+
+   }); // posting done...
+
+} // form 1
 form2.onsubmit = function(e) {
 	   	e.preventDefault();
        $('html, body').animate({
@@ -96,24 +105,18 @@ form2.onsubmit = function(e) {
    	 $('.loading').show();
 	 var posting = $.post( url, { s: message } );
 	 posting.done(function( data ) {
-     var ndata;
-     try{
-		 ndata = JSON.parse(data)['CATimeSheetManager.Insert.Response']['Return']['item'];
-   }
-   catch(err) {
-    console.log("got: "+ JSON.stringify(data));
-    $('#tabell').html("Obs.... something went wrong" + JSON.stringify(data) );
-}
+
+    console.log("got: "+ data);
+    $('#tabell').html("Obs.... something went wrong" + JSON.stringify(data));
+
 
 
 
    	 $('.result').hide();
    	 $('.loading').hide();
-	 if(ndata[0]){
-		 $('#tabell').html("Return Message: "+ndata[0].MESSAGE);
- 		}else{
- 			$('#tabell').html("Obs.. something went wrong" + data.MESSAGE );
- 		};
+
+		 $('#tabell').html("Return Message: "+data);
+ 		
 
  	});
    	 return false;
