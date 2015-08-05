@@ -4,7 +4,7 @@ block row-content
  div.row.image-options
   div.col-xs-12
    h3 TimeSheet
-   form(id='gtlist', class='form-inline', metod='post', action='/getTimeSheet')
+   form(id='gtlist' metod='post' action='/getTimeSheet')
     div(data-role='fieldcontain')
      div.form-group
       label(for='fdate') From Date
@@ -22,7 +22,7 @@ block row-content
       button(type='submit',value='Get timesheet') Get TimeSheet
    div.col-xs-12(style='border:1px dashed black')
    h3 TimeSheet
-   form(id='slist', class='form-inline', action='#' ,method='post')
+   form(id='slist' class='form-inline', action='#' ,method='post')
     div(data-role='fieldcontain')
      div.form-group
       label(for='profile') Profile
