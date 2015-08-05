@@ -777,6 +777,7 @@ pre code {
 @media (min-width: 992px) {
   .container {
     width: 970px;
+    border: 2px solid #404041;
   }
 }
 /*@media (min-width: 1200px) {
