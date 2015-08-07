@@ -16,6 +16,9 @@
 
 'use strict';
 var http = require('http');
+var passport = require('passport'); 
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var express = require('express'),
   app = express(),
   request = require('request'),
@@ -39,10 +42,78 @@ var credentials = extend({
 }, bluemix.getServiceCreds('visual_recognition')); // VCAP_SERVICES
 
 // render index page
-app.get('/', function(req, res) {
+app.get('/sucess', function(req, res) {
   res.render('index');
 });
 
+
+// sso settings
+app.use(cookieParser());
+app.use(session({resave: 'true', saveUninitialized: 'true' , secret: 'keyboard cat'}));
+app.use(passport.initialize());
+app.use(passport.session()); 
+
+passport.serializeUser(function(user, done) {
+   done(null, user);
+}); 
+
+passport.deserializeUser(function(obj, done) {
+   done(null, obj);
+});     
+
+// VCAP_SERVICES contains all the credentials of services bound to
+// this application. For details of its content, please refer to
+// the document or sample of each service.  
+var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
+var ssoConfig = services.SingleSignOn[0]; 
+var client_id = ssoConfig.credentials.clientId;
+var client_secret = ssoConfig.credentials.secret;
+var authorization_url = ssoConfig.credentials.authorizationEndpointUrl;
+var token_url = ssoConfig.credentials.tokenEndpointUrl;
+var issuer_id = ssoConfig.credentials.issuerIdentifier;
+var callback_url = "http://statoiltest.mybluemix.net/auth/sso/callback";        
+
+var OpenIDConnectStrategy = require('passport-idaas-openidconnect').IDaaSOIDCStrategy;
+var Strategy = new OpenIDConnectStrategy({
+                 authorizationURL : authorization_url,
+                 tokenURL : token_url,
+                 clientID : client_id,
+                 scope: 'openid',
+                 response_type: 'code',
+                 clientSecret : client_secret,
+                 callbackURL : callback_url,
+                 skipUserProfile: true,
+                 issuer: issuer_id}, 
+	function(iss, sub, profile, accessToken, refreshToken, params, done)  {
+	         	process.nextTick(function() {
+		profile.accessToken = accessToken;
+		profile.refreshToken = refreshToken;
+		done(null, profile);
+         	})
+}); 
+
+passport.use(Strategy); 
+app.get('/', passport.authenticate('openidconnect', {})); 
+          
+function ensureAuthenticated(req, res, next) {
+	if(!req.isAuthenticated()) {
+	          	req.session.originalUrl = req.originalUrl;
+		res.redirect('/login');
+	} else {
+		return next();
+	}
+}
+
+app.get('/auth/sso/callback',function(req,res,next) {
+			var redirect_url = "/sucess";      
+            // var redirect_url = req.session.originalUrl;                
+             passport.authenticate('openidconnect', {
+                     successRedirect: redirect_url,                                
+                     failureRedirect: '/failure',                        
+          })(req,res,next);
+        });
+app.get('/failure', function(req, res) { 
+             res.send('login failed'); });
 // CATIMEGetList
 var CATIMEGetList = require('./lib/CATIMEGetList.js');
 var api = new CATIMEGetList();
@@ -114,9 +185,9 @@ app.post('/sendTimesheet', function (req, res) {
 		        "ACTTYPE": "1410",
 		        "WBS_ELEMENT": "I/4004",
 		        "ABS_ATT_TYPE": "0800",
-		        "STARTTIME": "13:00:00",
-		        "ENDTIME": "17:30:00",
-						"SHORTTEXT": req.body.s.stext
+		        "STARTTIME": req.body.s.stime,
+		        "ENDTIME": req.body.s.etime,
+				"SHORTTEXT": req.body.s.stext
 		      }
 		    }
 		  }

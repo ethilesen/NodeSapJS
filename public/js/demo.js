@@ -21,6 +21,8 @@
   var wdate = document.getElementById('wdate');
   var empnr = document.getElementById('empnr');
   var scctr = document.getElementById('scctr');
+  var scctr = document.getElementById('stime');
+  var scctr = document.getElementById('etime'); 
   var messagesList = document.getElementById('messages');
 
 form.onsubmit = function(e) {
