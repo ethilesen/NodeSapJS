@@ -20,7 +20,10 @@ var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var express = require('express'),
-  app = express(),
+var port = process.env.VCAP_APP_PORT || 3000; 
+var hostn = process.env.VCAP_APP_HOST || "localhost"; 
+ 
+ app = express(),
   request = require('request'),
   path = require('path'),
   bluemix = require('./config/bluemix'),
@@ -31,9 +34,9 @@ var express = require('express'),
 
 // Bootstrap application settings
 require('./config/express')(app);
-var port = process.env.VCAP_APP_PORT || 3000;
 
-var hostn = process.env.VCAP_APP_HOST || "localhost";
+
+
 // if bluemix credentials exists, then override local
 var credentials = extend({
   version: 'v1',
