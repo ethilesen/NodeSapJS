@@ -12,7 +12,8 @@
     "validator": "^3.28.0",
     "passport":"^0.2.1",
 	"cookie-parser":"^1.0.1",
-	"express-session":"^1.0.2"
+	"express-session":"^1.0.2",
+	"passport-idaas-openidconnect":"*"
   },
   "engines": {
     "node": ">=0.10"
