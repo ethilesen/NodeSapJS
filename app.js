@@ -20,8 +20,7 @@ var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var express = require('express'),
-var port = process.env.VCAP_APP_PORT || 3000; 
-var hostn = process.env.VCAP_APP_HOST || "localhost"; 
+
  
  app = express(),
   request = require('request'),
@@ -34,6 +33,8 @@ var hostn = process.env.VCAP_APP_HOST || "localhost";
 
 // Bootstrap application settings
 require('./config/express')(app);
+var port = process.env.VCAP_APP_PORT || 3000; 
+var hostn = process.env.VCAP_APP_HOST || "localhost"; 
 
 
 
