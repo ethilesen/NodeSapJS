@@ -23,10 +23,7 @@ var session = require('express-session');
 var express = require('express'),
   app = express(),
   request = require('request'),
-  //path = require('path'),
   bluemix = require('./config/bluemix'),
-  //validator = require('validator'),
-  //extend = require('util')._extend,
   fs = require('fs');
 
 // Bootstrap application settings
