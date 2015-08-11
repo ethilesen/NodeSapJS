@@ -12,64 +12,48 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * IBM: Espen Thilesen / espen.thilesen@no.ibm.com
  */
 
 'use strict';
 var http = require('http');
-var passport = require('passport'); 
+var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var express = require('express'),
-
- 
- app = express(),
+  app = express(),
   request = require('request'),
-  path = require('path'),
+  //path = require('path'),
   bluemix = require('./config/bluemix'),
-  validator = require('validator'),
-  //watson = require('watson-developer-cloud'),
-  extend = require('util')._extend,
+  //validator = require('validator'),
+  //extend = require('util')._extend,
   fs = require('fs');
 
 // Bootstrap application settings
 require('./config/express')(app);
-var port = process.env.VCAP_APP_PORT || 3000; 
-var hostn = process.env.VCAP_APP_HOST || "localhost"; 
-
-
-
-// if bluemix credentials exists, then override local
-var credentials = extend({
-  version: 'v1',
-  username: '<username>',
-  password: '<password>'
-}, bluemix.getServiceCreds('visual_recognition')); // VCAP_SERVICES
-
-// render index page
-app.get('/sucess', function(req, res) {
-  res.render('index');
-});
+var port = process.env.VCAP_APP_PORT || 3000;
+var hostn = process.env.VCAP_APP_HOST || "localhost";
 
 
 // sso settings
 app.use(cookieParser());
 app.use(session({resave: 'true', saveUninitialized: 'true' , secret: 'keyboard cat'}));
 app.use(passport.initialize());
-app.use(passport.session()); 
+app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
    done(null, user);
-}); 
+});
 
 passport.deserializeUser(function(obj, done) {
    done(null, obj);
-});     
+});
 
 // VCAP_SERVICES contains all the credentials of services bound to
 // this application. For details of its content, please refer to
-// the document or sample of each service.  
+// the document or sample of each service.
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
-var ssoConfig = services.SingleSignOn[0]; 
+var ssoConfig = services.SingleSignOn[0];
 var client_id = ssoConfig.credentials.clientId;
 var client_secret = ssoConfig.credentials.secret;
 var authorization_url = ssoConfig.credentials.authorizationEndpointUrl;
@@ -80,8 +64,8 @@ if (process.env.VCAP_APPLICATION) {
       var  vcapApplication = JSON.parse(process.env.VCAP_APPLICATION);
     }
 
-var callback_url = "http://"+vcapApplication.application_uris+"/auth/sso/callback"; 
-console.log("Call back URL:", callback_url);       
+var callback_url = "http://"+vcapApplication.application_uris+"/auth/sso/callback";
+console.log("Call back URL:", callback_url);
 
 var OpenIDConnectStrategy = require('passport-idaas-openidconnect').IDaaSOIDCStrategy;
 var Strategy = new OpenIDConnectStrategy({
@@ -93,18 +77,24 @@ var Strategy = new OpenIDConnectStrategy({
                  clientSecret : client_secret,
                  callbackURL : callback_url,
                  skipUserProfile: true,
-                 issuer: issuer_id}, 
+                 issuer: issuer_id},
 	function(iss, sub, profile, accessToken, refreshToken, params, done)  {
 	         	process.nextTick(function() {
 		profile.accessToken = accessToken;
 		profile.refreshToken = refreshToken;
 		done(null, profile);
          	})
-}); 
+});
 
-passport.use(Strategy); 
-app.get('/', passport.authenticate('openidconnect', {})); 
-          
+// render index page if sso sucess
+app.get('/sucess', function(req, res) {
+  res.render('index');
+});
+
+
+passport.use(Strategy);
+app.get('/', passport.authenticate('openidconnect', {}));
+
 function ensureAuthenticated(req, res, next) {
 	if(!req.isAuthenticated()) {
 	          	req.session.originalUrl = req.originalUrl;
@@ -115,15 +105,18 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.get('/auth/sso/callback',function(req,res,next) {
-			var redirect_url = "/sucess";      
-            // var redirect_url = req.session.originalUrl;                
+			var redirect_url = "/sucess";
+            // var redirect_url = req.session.originalUrl;
              passport.authenticate('openidconnect', {
-                     successRedirect: redirect_url,                                
-                     failureRedirect: '/failure',                        
+                     successRedirect: redirect_url,
+                     failureRedirect: '/failure',
           })(req,res,next);
         });
-app.get('/failure', function(req, res) { 
+
+app.get('/failure', function(req, res) {
              res.send('login failed'); });
+
+
 // CATIMEGetList
 var CATIMEGetList = require('./lib/CATIMEGetList.js');
 var api = new CATIMEGetList();
