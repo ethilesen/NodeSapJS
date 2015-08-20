@@ -17,9 +17,6 @@
 
 'use strict';
 var http = require('http');
-var passport = require('passport');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
 var express = require('express'),
   app = express(),
   request = require('request'),
@@ -32,99 +29,27 @@ var port = process.env.VCAP_APP_PORT || 3000;
 var hostn = process.env.VCAP_APP_HOST || "localhost";
 
 
-// sso settings
-app.use(cookieParser());
-app.use(session({resave: 'true', saveUninitialized: 'true' , secret: 'keyboard cat'}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.serializeUser(function(user, done) {
-   done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-   done(null, obj);
-});
-
-// VCAP_SERVICES contains all the credentials of services bound to
-// this application. For details of its content, please refer to
-// the document or sample of each service.
-var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
-var ssoConfig = services.SingleSignOn[0];
-var client_id = ssoConfig.credentials.clientId;
-var client_secret = ssoConfig.credentials.secret;
-var authorization_url = ssoConfig.credentials.authorizationEndpointUrl;
-var token_url = ssoConfig.credentials.tokenEndpointUrl;
-var issuer_id = ssoConfig.credentials.issuerIdentifier;
-
-if (process.env.VCAP_APPLICATION) {
-      var  vcapApplication = JSON.parse(process.env.VCAP_APPLICATION);
-    }
-
-var callback_url = "http://"+vcapApplication.application_uris+"/auth/sso/callback";
-console.log("Call back URL:", callback_url);
-
-var OpenIDConnectStrategy = require('passport-idaas-openidconnect').IDaaSOIDCStrategy;
-var Strategy = new OpenIDConnectStrategy({
-                 authorizationURL : authorization_url,
-                 tokenURL : token_url,
-                 clientID : client_id,
-                 scope: 'openid',
-                 response_type: 'code',
-                 clientSecret : client_secret,
-                 callbackURL : callback_url,
-                 skipUserProfile: true,
-                 issuer: issuer_id},
-	function(iss, sub, profile, accessToken, refreshToken, params, done)  {
-	         	process.nextTick(function() {
-		profile.accessToken = accessToken;
-		profile.refreshToken = refreshToken;
-		done(null, profile);
-         	})
-});
 
 // render index page if sso sucess
-app.get('/sucess', function(req, res) {
+app.get('/', function(req, res) {
   res.render('index');
 });
 
 
-passport.use(Strategy);
-app.get('/', passport.authenticate('openidconnect', {}));
 
-function ensureAuthenticated(req, res, next) {
-	if(!req.isAuthenticated()) {
-	          	req.session.originalUrl = req.originalUrl;
-		res.redirect('/login');
-	} else {
-		return next();
-	}
-}
-
-app.get('/auth/sso/callback',function(req,res,next) {
-			var redirect_url = "/sucess";
-            // var redirect_url = req.session.originalUrl;
-             passport.authenticate('openidconnect', {
-                     successRedirect: redirect_url,
-                     failureRedirect: '/failure',
-          })(req,res,next);
-        });
-
-app.get('/failure', function(req, res) {
-             res.send('login failed'); });
 
 
 // CATIMEGetList
 var CATIMEGetList = require('./lib/CATIMEGetList.js');
 var api = new CATIMEGetList();
-api.setAPICredentials('apiuser@CloudIntegration', 'S!2w3e40');
-api.setAPISecretKey('cc282a38b942ec9bf6b748a6c7d3fc155cf7b2daf77a386e4043b42405c64378f19a74584f147e2f8e55872c2f30c17b');
+api.setAPICredentials('USERNAME', 'PASSWD');
+api.setAPISecretKey('KEY');
 
 // CATIMESHEETIncert
 var CATIMESHEETIncert = require('./lib/CATIMESHEETIncert.js');
 var api2 = new CATIMESHEETIncert();
-api2.setAPICredentials('apiuser@CloudIntegration', 'S!2w3e40');
-api2.setAPISecretKey('72e86a502b1914d34f50f47ac3057d15fbe835827f6f7d00099dde28896a747068140c3dca12f30c1acbc0d369c0c1fc');
+api2.setAPICredentials('USERNAME', 'PASSWD');
+api2.setAPISecretKey('KEY');
 
 
 app.post('/getTimesheet', function (req, res) {
