@@ -9,11 +9,7 @@
     "jade": "~1.9.1",
     "multer": "^0.1.7",
     "request": "~2.51.0",
-    "validator": "^3.28.0",
-    "passport":"^0.2.1",
-	"cookie-parser":"^1.0.1",
-	"express-session":"^1.0.2",
-	"passport-idaas-openidconnect":"*"
+    "validator": "^3.28.0"
   },
   "engines": {
     "node": ">=0.10"
